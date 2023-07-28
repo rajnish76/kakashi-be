@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { toJSON, paginate } = require('./plugins');
+const { toJSON } = require('./plugins');
 
 const reviewSchema = mongoose.Schema(
   {
@@ -37,7 +37,6 @@ const reviewSchema = mongoose.Schema(
 
 // add plugin that converts mongoose to json
 reviewSchema.plugin(toJSON);
-reviewSchema.plugin(paginate);
 
 /**
  * @typedef Review

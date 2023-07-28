@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { toJSON, paginate } = require('./plugins');
+const { toJSON } = require('./plugins');
 
 const userSchema = mongoose.Schema(
   {
@@ -14,7 +14,11 @@ const userSchema = mongoose.Schema(
     name: {
       type: String,
     },
-    sRole: {
+    phoneNo: {
+      type: Number,
+      unique: true,
+    },
+    role: {
       type: String,
       enum: ['user', 'admin'],
       default: 'user',
@@ -27,7 +31,6 @@ const userSchema = mongoose.Schema(
 
 // add plugin that converts mongoose to json
 userSchema.plugin(toJSON);
-userSchema.plugin(paginate);
 
 /**
  * @typedef User
