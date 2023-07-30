@@ -3,7 +3,7 @@ const catchAsync = require('../utils/catchAsync');
 const { User } = require('../models');
 
 const register = catchAsync(async (req, res) => {
-  let user = await User.find({ userId: req.body.userId });
+  let user = await User.findOne({ userId: req.body.userId });
   if (!user || user.length === 0) {
     user = await User.create(req.body);
     return res.status(httpStatus.CREATED).send({ s: true, user });
