@@ -42,7 +42,7 @@ const updateCategory = catchAsync(async (req, res) => {
 });
 
 const deleteCategory = catchAsync(async (req, res) => {
-  const category = await Category.findById(req.params.userId);
+  const category = await Category.findById({ _id: req.params.id });
   if (!category) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Category not found');
   }
