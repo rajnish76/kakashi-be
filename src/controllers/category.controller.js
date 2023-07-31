@@ -31,7 +31,7 @@ const getCategoryById = catchAsync(async (req, res) => {
 });
 
 const updateCategory = catchAsync(async (req, res) => {
-  const category = await Category.findByIdAndUpdate(req.params.userId, res.body, {
+  const category = await Category.findByIdAndUpdate({ _id: req.body.id }, res.body, {
     new: true, // Return the updated user rather than the old one
     runValidators: true, // Run validation on the updated data (if defined in schema)
   });
