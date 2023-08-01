@@ -31,14 +31,13 @@ const getCategoryById = catchAsync(async (req, res) => {
 });
 
 const updateCategory = catchAsync(async (req, res) => {
-  const category = await Category.findByIdAndUpdate({ _id: req.body.id }, res.body, {
-    new: true, // Return the updated user rather than the old one
-    runValidators: true, // Run validation on the updated data (if defined in schema)
-  });
+  const category = await Category.findOne({ _id: req.body.id });
   if (!category) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Category not found');
   }
-  res.send({ s: true, category });
+  category.set(req.body);
+  const updatedCategory = await category.save();
+  res.send({ s: true, category: updatedCategory });
 });
 
 const deleteCategory = catchAsync(async (req, res) => {
@@ -50,10 +49,33 @@ const deleteCategory = catchAsync(async (req, res) => {
   res.status(httpStatus.NO_CONTENT).send({ s: true });
 });
 
+const getCategoryBySlug = catchAsync(async (req, res) => {
+  const category = await Category.findOne({ slug: req.params.slug }).populate({
+    path: 'products',
+    select: 'name',
+  });
+  if (!category) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Category not found');
+  }
+  res.send({ s: true, category });
+});
+
+const updateCategoryBySlug = catchAsync(async (req, res) => {
+  const category = await Category.findOne({ slug: req.params.slug });
+  if (!category) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Category not found');
+  }
+  category.set(req.body);
+  const updatedCategory = await category.save();
+  res.send({ s: true, category: updatedCategory });
+});
+
 module.exports = {
   addCategory,
   getCategory,
   getCategoryById,
   updateCategory,
   deleteCategory,
+  getCategoryBySlug,
+  updateCategoryBySlug,
 };

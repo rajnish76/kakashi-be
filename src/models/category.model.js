@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
-// const slug = require('mongoose-slug-generator');
-const { toJSON, paginate } = require('./plugins');
+const { toJSON, paginate, slugGenerator } = require('./plugins');
 
 const categorySchema = mongoose.Schema(
   {
@@ -9,11 +8,10 @@ const categorySchema = mongoose.Schema(
       trim: true,
       unique: true,
     },
-    // slug: {
-    //   type: String,
-    //   slug: 'name',
-    //   unique: true,
-    // },
+    slug: {
+      type: String,
+      unique: true,
+    },
     image: {
       type: String,
     },
@@ -40,11 +38,10 @@ const categorySchema = mongoose.Schema(
 // add plugin that converts mongoose to json
 categorySchema.plugin(toJSON);
 categorySchema.plugin(paginate);
-// categorySchema.plugin(slug, {
-//   separator: '-',
-//   lang: 'en',
-//   truncate: 120,
-// });
+categorySchema.plugin(slugGenerator, {
+  slugField: 'slug', // Change to the field name where you want to store the slug.
+  sourceField: 'name', // Change to the field name from which you want to generate the slug.
+});
 
 /**
  * @typedef Category

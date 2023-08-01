@@ -1,17 +1,11 @@
 const mongoose = require('mongoose');
-const slug = require('mongoose-slug-generator');
-const { toJSON, paginate } = require('./plugins');
+const { toJSON, paginate, slugGenerator } = require('./plugins');
 
 const productSchema = mongoose.Schema(
   {
     title: {
       type: String,
       trim: true,
-      unique: true,
-    },
-    slug: {
-      type: String,
-      slug: 'title',
       unique: true,
     },
     imageUrl: {
@@ -50,6 +44,10 @@ const productSchema = mongoose.Schema(
       ref: 'Category',
       default: null,
     },
+    slug: {
+      type: String,
+      unique: true,
+    },
   },
   {
     timestamps: true,
@@ -59,10 +57,9 @@ const productSchema = mongoose.Schema(
 // add plugin that converts mongoose to json
 productSchema.plugin(toJSON);
 productSchema.plugin(paginate);
-productSchema.plugin(slug, {
-  separator: '-',
-  lang: 'en',
-  truncate: 120,
+productSchema.plugin(slugGenerator, {
+  slugField: 'slug', // Change to the field name where you want to store the slug.
+  sourceField: 'title', // Change to the field name from which you want to generate the slug.
 });
 
 /**

@@ -10,13 +10,13 @@ const userSchema = mongoose.Schema(
     email: {
       type: String,
       unique: true,
+      required: true,
     },
     name: {
       type: String,
     },
     phoneNo: {
       type: String,
-      unique: true,
     },
     role: {
       type: String,
