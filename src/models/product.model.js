@@ -15,7 +15,7 @@ const productSchema = mongoose.Schema(
       type: Number,
       default: 1,
     },
-    quantity: {
+    totalQuantity: {
       type: Number,
       default: 1,
     },
